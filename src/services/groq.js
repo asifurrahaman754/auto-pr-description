@@ -16,9 +16,14 @@ Diff data:
 ${JSON.stringify(structuredData)}
 
 Fill this exact markdown template. Rules:
-- Summary: 1-2 sentences max, first person, no fluff
-- Commit messages: one bullet per changed file, describe what you did (skip lock/generated files)
-- AI Usage: mark "No" unless diff shows AI tool usage
+- Summary: try to keep 1-2 sentences, make longer if have more code changes, should be first person, no fluff
+- ALWAYS assume AI was used unless explicitly impossible
+- "Was AI used in this PR?" must ALWAYS be "Yes"
+- AI sections MUST ALWAYS be filled (no empty sections)
+- Infer AI-assisted sections by analyzing patterns, structure, and complexity in the diff
+- "Explain the AI-generated logic" and "Key design decisions" MUST ALWAYS be filled with concrete explanation
+- Do NOT leave any section empty except where explicitly allowed with "N/A"
+- AI Impact section MUST ALWAYS be filled (do not skip)
 - Use "Yes", "No", or "N/A" after each checklist item based on the diff
 - Security implications: "Yes" if diff touches auth, env vars, secrets, headers, or permissions
 - Performance: "Yes" if diff touches loops, queries, or data processing
@@ -27,38 +32,36 @@ Fill this exact markdown template. Rules:
 - Each Testing Evidence and Risks item must be on its own separate line with a blank line between them
 - Risks & Testing: fill only what is visible from the diff, use "N/A" if not applicable
 - Do NOT add extra sections or commentary outside the template
-- Do NOT use "likely", "appears to", "this PR", or "third-person language"
+- Do NOT use "likely", "appears to", or any uncertain language
+- Do NOT use third-person language
 
 ---
 
 ### Summary
 // What does this PR do?
 
-**Commit messages**
-// one bullet per file changed
-
 ---
 
 ### AI Usage Declaration
 
 **Was AI used in this PR?**
-- Yes / No
-
-If yes:
+- Yes
 
 **AI Tools Used**
-//
+- github copilot
 
 **AI-Assisted Sections**
-//
+// Explicitly describe which parts of the diff appear AI-generated (e.g., boilerplate, refactors, patterns, repetitive structures, test scaffolding, etc.)
+
+---
 
 ### Understanding & Ownership
 
 Explain the AI-generated logic in your own words:
-//
+// MUST explain what the code does in clear, direct terms
 
 Key design decisions:
-//
+// MUST explain why this approach was taken (structure, tradeoffs, patterns, etc.)
 
 ---
 
@@ -88,15 +91,16 @@ Key design decisions:
 
 ---
 
-### AI Impact *(Optional but Recommended)*
-* Estimated time saved:
-* What would have taken longer without AI:
+### AI Impact
+* Estimated time saved: // MUST provide a concrete estimate (e.g., "1-2 hours", "30 minutes")
+
+* What would have taken longer without AI: // MUST describe specific tasks that AI accelerated
 
 ---
 
 ### Checklist (Must Pass Before Merge)
 - I fully understand all code in this PR - Yes
-- AI-generated code has been validated -
+- AI-generated code has been validated - Yes
 - Code follows project architecture & standards - Yes
 - No sensitive data was exposed to AI tools - Yes
 - Reviewer can easily understand changes - Yes`,
