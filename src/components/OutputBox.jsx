@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import "./OutputBox.css";
 
-export default function OutputBox({ output, onPushToBitbucket, pushing }) {
+export default function OutputBox({
+  output,
+  onPushToBitbucket,
+  pushing,
+  project,
+}) {
   const [copied, setCopied] = useState(false);
 
   function handleCopy() {
@@ -33,7 +38,8 @@ export default function OutputBox({ output, onPushToBitbucket, pushing }) {
             <button
               className={`action-btn push-btn ${pushing ? "loading" : ""}`}
               onClick={onPushToBitbucket}
-              disabled={pushing}
+              disabled={pushing || !project}
+              title={!project ? "Set project to enable pushing" : undefined}
             >
               {pushing ? (
                 <>

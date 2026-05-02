@@ -1,7 +1,7 @@
 import React from "react";
 import "./Header.css";
 
-export default function Header() {
+export default function Header({ project }) {
   return (
     <header className="header">
       <div className="header-left">
@@ -15,7 +15,12 @@ export default function Header() {
           <p className="header-sub">Bitbucket · Groq · LLaMA 3.3</p>
         </div>
       </div>
-      <div className="header-badge">v1.0</div>
+      <div className="header-right">
+        <div className="header-badge">v1.0</div>
+        <div className={`project-indicator ${project ? "active" : "empty"}`}>
+          {project ? project : "No project"}
+        </div>
+      </div>
     </header>
   );
 }

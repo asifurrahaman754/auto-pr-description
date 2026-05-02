@@ -1,13 +1,38 @@
 import React from "react";
 import "./PRForm.css";
 
-export default function PRForm({ prId, onChange, onSubmit, loading }) {
+export default function PRForm({
+  prId,
+  onChange,
+  onSubmit,
+  loading,
+  project,
+  onProjectChange,
+}) {
   function handleKeyDown(e) {
     if (e.key === "Enter") onSubmit();
   }
 
   return (
     <div className="form-card">
+      <div className="form-label-row">
+        <label className="form-label" htmlFor="project-input">
+          Project (repo slug)
+        </label>
+        <span className="form-hint">Set repository slug (saved locally)</span>
+      </div>
+
+      <div className="form-row project-row">
+        <input
+          id="project-input"
+          className="form-input"
+          type="text"
+          placeholder="e.g. emctech.app"
+          value={project || ""}
+          onChange={(e) => onProjectChange && onProjectChange(e.target.value)}
+        />
+      </div>
+
       <div className="form-label-row">
         <label className="form-label" htmlFor="pr-input">
           Pull Request ID
@@ -34,7 +59,7 @@ export default function PRForm({ prId, onChange, onSubmit, loading }) {
         <button
           className={`generate-btn ${loading ? "loading" : ""}`}
           onClick={onSubmit}
-          disabled={loading || !prId}
+          disabled={loading || !prId || !project}
         >
           {loading ? (
             <>

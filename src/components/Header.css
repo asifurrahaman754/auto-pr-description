@@ -60,3 +60,24 @@
   border-radius: 4px;
   border: 1px solid var(--accent-border);
 }
+
+.header-right {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.project-indicator {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  background: var(--surface-2);
+}
+
+.project-indicator.active {
+  color: var(--text-primary);
+  border-color: var(--accent-border);
+}
