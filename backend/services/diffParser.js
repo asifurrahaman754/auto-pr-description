@@ -1,4 +1,4 @@
-export function summarizeDiff(diffText) {
+function summarizeDiff(diffText) {
   const files = [];
   const fileBlocks = diffText.split("diff --git");
 
@@ -30,7 +30,7 @@ export function summarizeDiff(diffText) {
       .slice(0, 20);
 
     const additions = (block.match(/^\+/gm) || []).length;
-    const deletions = (block.match(/^\-/gm) || []).length;
+    const deletions = (block.match(/^- /gm) || []).length;
 
     files.push({
       file: fileName,
@@ -43,3 +43,5 @@ export function summarizeDiff(diffText) {
 
   return files.slice(0, 15);
 }
+
+module.exports = { summarizeDiff };
