@@ -5,6 +5,7 @@ require("dotenv").config();
 
 const {
   getDiff: bbGetDiff,
+  getPRDetails: bbGetPRDetails,
   updatePR: bbUpdatePR,
 } = require("./services/bitbucket");
 const { generatePRDescriptionWithGroq } = require("./services/groq");
@@ -36,18 +37,29 @@ app.post("/api/pr/description", async (req, res) => {
     const { structuredData, prId, repo } = req.body;
 
     let structured = structuredData;
+    let prTitle = "";
+    
     if (!structured) {
       if (!prId)
         return res
           .status(400)
           .json({ error: "prId required when structuredData not provided" });
-      const diff = await bbGetDiff(prId, repo || process.env.REPO_SLUG);
+      if (!repo)
+        return res
+          .status(400)
+          .json({ error: "repo required" });
+      const [diff, prDetails] = await Promise.all([
+        bbGetDiff(prId, repo),
+        bbGetPRDetails(prId, repo),
+      ]);
       structured = summarizeDiff(diff);
+      prTitle = prDetails.title;
     }
 
-    const description = await generatePRDescriptionWithGroq(structured);
+    const description = await generatePRDescriptionWithGroq(structured, prTitle);
     res.json({ description });
   } catch (err) {
+    console.log("error", err);
     res.status(500).json({ error: err.message });
   }
 });

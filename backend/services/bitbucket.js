@@ -27,6 +27,18 @@ async function getDiff(prId, repoSlug) {
   return res.data;
 }
 
+async function getPRDetails(prId, repoSlug) {
+  const repo = repoSlug;
+  const url = `https://api.bitbucket.org/2.0/repositories/${WORKSPACE}/${repo}/pullrequests/${prId}`;
+  const res = await axios.get(url, {
+    headers: authHeader(),
+  });
+  return {
+    title: res.data.title,
+    description: res.data.description || "",
+  };
+}
+
 async function updatePR(prId, description, repoSlug) {
   const repo = repoSlug;
   const url = `https://api.bitbucket.org/2.0/repositories/${WORKSPACE}/${repo}/pullrequests/${prId}`;
@@ -37,4 +49,4 @@ async function updatePR(prId, description, repoSlug) {
   );
 }
 
-module.exports = { getDiff, updatePR };
+module.exports = { getDiff, getPRDetails, updatePR };

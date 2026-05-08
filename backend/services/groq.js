@@ -5,7 +5,10 @@ const GROQ_API_KEY = process.env.GROQ_API_KEY;
 
 if (!GROQ_API_KEY) console.warn("GROQ_API_KEY not set in env");
 
-async function generatePRDescriptionWithGroq(structuredData) {
+async function generatePRDescriptionWithGroq(structuredData, prTitle = "") {
+  const featureGoal = prTitle || "No additional context provided";
+
+  
   const res = await axios.post(
     "https://api.groq.com/openai/v1/chat/completions",
     {
@@ -13,7 +16,10 @@ async function generatePRDescriptionWithGroq(structuredData) {
       messages: [
         {
           role: "user",
-          content: `You are the developer who wrote these changes, writing your own PR description. Be concise and to the point.
+          content: `You are the developer who wrote these changes, writing your own PR description. Try to explain the changes to the reviewer using the diff and the pr title.
+
+PR Title: ${prTitle}
+Feature Goal/Description: ${featureGoal}
 
 Diff data:
 ${JSON.stringify(structuredData)}
